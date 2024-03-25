@@ -17,6 +17,15 @@ require_once __DIR__ . "/partials/nav.php";
 
   <main>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+      <ul class="list-disc pl-8">
+        <?php foreach ($notes as $note) : ?>
+          <li>
+            <a href="/note?id=<?= htmlspecialchars($note['id']) ?>" class="text-blue-500 pl-2 hover:underline">
+              <?= $note['title'] ?>
+            </a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
     </div>
   </main>
 </div>

@@ -5,11 +5,11 @@ class Database
   public $conn;
   public $statement;
 
-  public function __construct($config, $username = 'root', $password = '')
+  public function __construct($config)
   {
     $dsn = 'mysql:' . http_build_query($config, '', ';');
 
-    $this->conn = new PDO($dsn, $username, $password, [
+    $this->conn = new PDO($dsn, $config['username'], $config['password'], [
       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]);
 
@@ -22,11 +22,6 @@ class Database
 
     $this->statement->execute($params);
 
-    return $this;
-  }
-
-  public function fetch()
-  {
-    return $this->statement->fetch();
+    return $this->statement;
   }
 }
