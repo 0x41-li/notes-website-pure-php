@@ -22,6 +22,15 @@ class Database
 
     $this->statement->execute($params);
 
-    return $this->statement;
+    return $this;
+  }
+
+  public function findOrFail()
+  {
+    $result = $this->statement->fetch();
+
+    if (!$result) abort();
+
+    return $result;
   }
 }

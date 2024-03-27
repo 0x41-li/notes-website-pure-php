@@ -8,9 +8,8 @@ $db = new Database($config['database']);
 $currentUser = 1;
 
 $id = $_GET['id'];
-$note = $db->query('SELECT * FROM notes WHERE id = :id', [":id" => $id])->fetch();
+$note = $db->query('SELECT * FROM notes WHERE id = :id', [":id" => $id])->findOrFail();
 
-if (!$note) abort(Response::NOT_FOUND);
 
 if ($currentUser !== $note["user_id"]) abort(Response::FORBIDDEN);
 
