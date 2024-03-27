@@ -24,4 +24,4 @@ require_once __DIR__ . "/partials/nav.php";
 
 
 <?php
-require_once __DIR__ . "/../partials/footer.php";
+require_once __DIR__ . "/partials/footer.php";
