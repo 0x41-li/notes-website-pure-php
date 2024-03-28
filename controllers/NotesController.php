@@ -6,6 +6,6 @@ $config = require(__DIR__ . '/../config.php');
 $heading = "My Notes";
 
 $db = new Database($config['database']);
-$notes = $db->query('SELECT * FROM notes');
+$notes = $db->query('SELECT * FROM notes')->findAllOrFail();
 
 require __DIR__ . "/../views/notes.view.php";
