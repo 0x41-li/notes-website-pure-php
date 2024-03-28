@@ -21,7 +21,7 @@ require_once __DIR__ . "/partials/nav.php";
         <?php foreach ($notes as $note) : ?>
           <li>
             <a href="/note?id=<?= htmlspecialchars($note['id']) ?>" class="text-blue-500 pl-2 hover:underline">
-              <?= $note['title'] ?>
+              <?= htmlspecialchars($note['title']) ?>
             </a>
           </li>
         <?php endforeach; ?>
