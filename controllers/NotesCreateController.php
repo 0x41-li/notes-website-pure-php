@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . "/../Database.php";
+require_once __DIR__ . "/../Validator.php";
+
 $config = require(__DIR__ . '/../config.php');
 
 $db = new Database($config['database']);
@@ -9,17 +11,14 @@ $db = new Database($config['database']);
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $errors = [];
 
-  if (strlen($_POST["title"]) === 0) {
-    $errors["title"] = "The title is required";
-  } else  if (strlen($_POST["title"]) > 255) {
-    $errors["title"] = "The title has exceeded the allowed length of 255";
+  if (!Validator::string($_POST["title"], 1, 255)) {
+    $errors["title"] = "The title is required, and cannot be more than 255 characters";
   }
 
-  if (strlen($_POST["body"]) === 0) {
-    $errors["body"] = "The body is required";
-  } else  if (strlen($_POST["body"]) > 1000) {
-    $errors["body"] = "The body has exceeded the allowed length of 255";
+  if (!Validator::string($_POST["body"], 1, 255)) {
+    $errors["body"] = "The body is required, and cannot be more than 1000 characters";
   }
+
 
   if (empty($errors)) {
     $db->query(
