@@ -1,15 +1,16 @@
 <?php
 
-require_once __DIR__ . "/../Database.php";
-require_once __DIR__ . "/../Validator.php";
+require_once base_path("core/Database.php");
 
-$config = require(__DIR__ . '/../config.php');
+require_once base_path("core/Validator.php");
+
+$config = require(base_path('config.php'));
 
 $db = new Database($config['database']);
 
+$errors = [];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $errors = [];
 
   if (!Validator::string($_POST["title"], 1, 255)) {
     $errors["title"] = "The title is required, and cannot be more than 255 characters";
@@ -34,4 +35,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 $heading = "Create A New Note";
 
-require_once __DIR__ . "/../views/notes-create.php";
+view("notes/create.view.php", ["heading" => $heading, "errors" => $errors]);

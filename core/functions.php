@@ -17,3 +17,15 @@ function abort($code = 404)
 
   die();
 }
+
+function base_path($path = "")
+{
+  return BASE_PATH . $path;
+}
+
+function view($view, $data = [])
+{
+  extract($data);
+
+  require base_path("views/" . $view);
+}

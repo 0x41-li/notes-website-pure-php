@@ -1,8 +1,9 @@
 <?php
 
-require_once __DIR__ . "/../Database.php";
+require_once  base_path("core/Database.php");
 
-$config = require(__DIR__ . '/../config.php');
+$config = require(base_path('config.php'));
+
 $db = new Database($config['database']);
 
 $currentUser = 1;
@@ -15,4 +16,4 @@ if ($currentUser !== $note["user_id"]) abort(Response::FORBIDDEN);
 
 $heading = $note['title'];
 
-require __DIR__ . "/../views/note.view.php";
+view("/notes/show.view.php", ["heading" => $heading, "note" => $note]);
