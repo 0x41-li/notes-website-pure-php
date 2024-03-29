@@ -25,6 +25,9 @@ require_once __DIR__ . "/partials/nav.php";
               <div class="mt-2">
                 <input id="title" name="title" placeholder="An awesome title" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
               </div>
+              <?php if (isset($errors["title"])) : ?>
+                <p class="text-sm text-red-700 mt-2"><?= $errors["title"] ?></p>
+              <?php endif; ?>
 
             </div>
 
@@ -32,6 +35,9 @@ require_once __DIR__ . "/partials/nav.php";
               <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Descrition</label>
               <div class="mt-2">
                 <textarea id="body" name="body" rows="3" placeholder="Write something awesome, isn't that what you always do!" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                <?php if (isset($errors["body"])) : ?>
+                  <p class="text-sm text-red-700 mt-2"><?= $errors["body"] ?></p>
+                <?php endif; ?>
               </div>
             </div>
 
