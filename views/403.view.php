@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/partials/header.php";
-require_once __DIR__ . "/partials/nav.php";
+view("/partials/header.php");
+view("/partials/nav.php");
 
 ?>
 
@@ -26,4 +26,5 @@ require_once __DIR__ . "/partials/nav.php";
 
 
 <?php
-require_once __DIR__ . "/partials/footer.php";
+
+view("/partials/footer.php");
