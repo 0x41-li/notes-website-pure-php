@@ -1,5 +1,7 @@
 <?php
 
+use Core\Response;
+
 function dd($data)
 {
   echo "<pre>";
@@ -28,4 +30,16 @@ function view($view, $data = [])
   extract($data);
 
   require base_path("views/" . $view);
+}
+
+function is_post_request()
+{
+  return strtolower($_SERVER["REQUEST_METHOD"]) === "post";
+}
+
+function authorize($condition)
+{
+  if (!$condition) abort(Response::FORBIDDEN);
+
+  return $condition;
 }

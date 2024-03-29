@@ -6,13 +6,25 @@ use Core\Response;
 $config = require(base_path('config.php'));
 $db = new Database($config['database']);
 
+$id = $_GET['id'];
 $currentUser = 1;
 
-$id = $_GET['id'];
-$note = $db->query('SELECT * FROM notes WHERE id = :id', [":id" => $id])->findOrFail();
+if (is_post_request()) {
 
-if ($currentUser !== $note["user_id"]) abort(Response::FORBIDDEN);
+  $id = $_POST['id'];
+  $note = $db->query('SELECT * FROM notes WHERE id = :id', [":id" => $id])->findOrFail();
 
-$heading = $note['title'];
+  authorize($currentUser === $note["user_id"]);
 
-view("/notes/show.view.php", ["heading" => $heading, "note" => $note]);
+  $db->query('DELETE FROM notes WHERE id = :id', [":id" => $id]);
+
+  header("location: /notes");
+} else {
+  $note = $db->query('SELECT * FROM notes WHERE id = :id', [":id" => $id])->findOrFail();
+
+  authorize($currentUser === $note["user_id"]);
+
+  $heading = $note['title'];
+
+  view("/notes/show.view.php", ["heading" => $heading, "note" => $note]);
+}
