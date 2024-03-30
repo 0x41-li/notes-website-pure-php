@@ -10,12 +10,12 @@ class Response
 
   public static function forbidden()
   {
-    self::abort(self::FORBIDDEN);
+    static::abort(self::FORBIDDEN);
   }
 
   public static function notFound()
   {
-    self::abort(self::NOT_FOUND);
+    static::abort(self::NOT_FOUND);
   }
 
   public static function redirect($location)
