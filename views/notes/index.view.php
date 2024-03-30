@@ -27,7 +27,7 @@ view("/partials/nav.php");
         <?php endforeach; ?>
       </ul>
 
-      <a class="bg-gray-800 text-sm text-white px-4 py-2 mt-4 inline-block rounded font-bold hover:bg-gray-700" href="/notes/create">Create a Note</a>
+      <a class="bg-gray-800 text-sm text-white px-4 py-2 mt-4 inline-block rounded font-bold hover:bg-gray-700" href="/note/create">Create a Note</a>
     </div>
   </main>
 </div>

@@ -1,21 +1,24 @@
 <?php
 
 use Core\Database;
+use Core\Response;
 
 $config = require(base_path('config.php'));
 $db = new Database($config['database']);
+
+$id = $_POST["id"];
 
 $currentUser = 1;
 
 $note = $db->query(
   'SELECT * FROM notes WHERE id = :id',
   [
-    ":id" => $_GET["id"]
+    ":id" => $id
   ]
 )->findOrFail();
 
 authorize($currentUser === $note["user_id"]);
 
-$heading = $note['title'];
+$db->query('DELETE FROM notes WHERE id = :id', [":id" => $id]);
 
-view("/notes/show.view.php", ["heading" => $heading, "note" => $note]);
+Response::redirect("/notes");

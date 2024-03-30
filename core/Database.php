@@ -33,7 +33,7 @@ class Database
   {
     $result = $this->statement->fetch();
 
-    if (!$result) abort();
+    if (!$result) Response::notFound();
 
     return $result;
   }
@@ -42,7 +42,7 @@ class Database
   {
     $result = $this->statement->fetchAll();
 
-    if (!$result) abort();
+    if (!$result) Response::notFound();
 
     return $result;
   }

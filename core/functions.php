@@ -11,15 +11,6 @@ function dd($data)
   die();
 }
 
-function abort($code = 404)
-{
-  http_response_code($code);
-
-  view("/{$code}.view.php");
-
-  die();
-}
-
 function base_path($path = "")
 {
   return BASE_PATH . $path;
@@ -39,7 +30,7 @@ function is_post_request()
 
 function authorize($condition)
 {
-  if (!$condition) abort(Response::FORBIDDEN);
+  if (!$condition) Response::forbidden();
 
   return $condition;
 }
