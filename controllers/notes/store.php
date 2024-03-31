@@ -8,7 +8,6 @@ use Core\Database;
 
 $db = App::resolve(Database::class);
 
-$heading = "Create A New Note";
 $errors = [];
 
 if (!Validator::string($_POST["title"], 1, 255)) {
@@ -19,6 +18,7 @@ if (!Validator::string($_POST["body"], 1, 1000)) {
   $errors["body"] = "The body is required, and cannot be more than 1000 characters";
 }
 
+$heading = "Create A New Note";
 if (!empty($errors)) {
   view("notes/create.view.php", ["heading" => $heading, "errors" => $errors]);
   die();

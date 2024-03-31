@@ -5,16 +5,18 @@ use Core\Database;
 
 $db = App::resolve(Database::class);
 
-$currentUser = 1;
+$id = $_GET["id"] ?? null;
+
+$current_user = 1;
 
 $note = $db->query(
-  'SELECT * FROM notes WHERE id = :id',
+  "SELECT * FROM notes WHERE id = :id",
   [
-    ":id" => $_GET["id"]
+    ":id" => $id
   ]
 )->findOrFail();
 
-authorize($currentUser === $note["user_id"]);
+authorize($current_user === $note["user_id"]);
 
 $heading = $note['title'];
 
