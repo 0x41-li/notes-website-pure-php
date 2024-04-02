@@ -3,6 +3,7 @@
 use Core\App;
 use Core\Database;
 
+// Grab the database
 $db = App::resolve(Database::class);
 
 // find the note
@@ -13,7 +14,6 @@ $note = $db->query(
     ":id" => $id
   ]
 )->findOrFail();
-
 
 // check if the user is authorized to see this note
 $current_user = 1;

@@ -28,7 +28,7 @@ class Response
   {
     http_response_code($code);
 
-    view("/{$code}.view.php");
+    view("{$code}.view.php");
 
     die();
   }
