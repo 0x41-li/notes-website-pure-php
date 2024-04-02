@@ -7,6 +7,7 @@ use Core\Middleware\Middleware;
 class Router
 {
   protected $routes = [];
+  protected $group_routes = [];
 
   public function add($uri, $controller, $method)
   {
@@ -45,12 +46,45 @@ class Router
     return $this->add($uri, $controller, "PATCH");
   }
 
-  // add midlleware to the array
+  // Added middlewares
   public function only($middleware_name)
   {
+    // check if there's a group middleware by checking the group_middleware property
+    // if so then it means this a call from a group function
+    if (isset($this->group_routes)) {
+
+      // Go over each route on the group route
+      // and add the middleware
+      foreach ($this->group_routes as $key => $group_route) {
+        $this->group_routes[$key]["middleware"] = $middleware_name;
+      }
+
+      // Merge the group routes with the main routes
+      $this->routes = array_merge($this->routes, $this->group_routes);
+
+      // Unset the group routes
+      $this->group_routes = [];
+
+      return;
+    }
+
     $this->routes[array_key_last($this->routes)]["middleware"] = $middleware_name;
   }
 
+  public function group($callback)
+  {
+
+    $group_router = new self();
+
+    $callback($group_router);
+
+
+    $this->group_routes = $group_router->routes;
+
+    return $this;
+  }
+
+  // resolve the current path
   public function resolve($uri, $method)
   {
     foreach ($this->routes as $route) {

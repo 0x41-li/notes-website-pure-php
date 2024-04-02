@@ -10,7 +10,7 @@ class GuestMiddleware
   public function handle()
   {
     if (Auth::is_logged_in()) {
-      Response::redirect("/login");
+      Response::redirect("/");
     }
   }
 }
