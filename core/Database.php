@@ -49,6 +49,8 @@ class Database
   {
     $result = $this->statement->fetchAll();
 
+    if (count($result) === 0) return $result;
+
     if (!$result) Response::notFound();
 
     return $result;
