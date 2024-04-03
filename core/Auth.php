@@ -12,28 +12,37 @@ class Auth
   {
     session_start();
 
-    if (isset($_SESSION["user"])) {
-      static::$user = $_SESSION["user"];
-    }
+    static::$user = $_SESSION["user"] ?? NULL;
   }
 
   public static function login($user)
   {
+    // Preventing session fixation attack
+    session_regenerate_id();
+
+    // Mark the user login
     $_SESSION["user"] = [
-      "name" => $user["name"], "email" => $user["email"]
+      "id" => $user["id"],
+      "name" => $user["name"],
+      "email" => $user["email"]
     ];
 
+    // Store this on the user static var on this class
     static::$user = $_SESSION["user"];
   }
 
   public static function logout()
   {
+    // unset the the user array
+    static::$user = [];
+
     // unset the session array
-    $_SESSION = [];
+    unset($_SESSION);
 
 
     // remove the session cookie
     $params = session_get_cookie_params();
+
     setcookie(
       session_name(),
       "",
