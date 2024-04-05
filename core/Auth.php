@@ -7,6 +7,7 @@ namespace Core;
 class Auth
 {
   public static $user;
+  public static $errors;
 
   public function __construct()
   {
@@ -15,10 +16,40 @@ class Auth
     static::$user = $_SESSION["user"] ?? NULL;
   }
 
+  public static function attempt($email, $password)
+  {
+    // initialize the errors array
+    $db = App::resolve(Database::class);
+
+    // Check if the user exist on the db
+    $user = $db->query(
+      "SELECT * FROM users WHERE email = :email",
+      [
+        ":email" => $email
+      ]
+    )->find();
+
+
+    // if user doesn't exist on the db
+    if ($user) {
+
+      // Check if the password provided match the user's hashed pass on the db
+      if (password_verify($password, $user["password"])) {
+
+        // authenticate the user 
+        Auth::login($user);
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public static function login($user)
   {
     // Preventing session fixation attack
-    session_regenerate_id();
+    session_regenerate_id(true);
 
     // Mark the user logged in
     $_SESSION["user"] = [
@@ -29,8 +60,6 @@ class Auth
 
     // Store this on the user static var on this class
     static::$user = $_SESSION["user"];
-
-    dd($user);
   }
 
   public static function logout()
@@ -61,7 +90,8 @@ class Auth
 
   public static function user($key = NULL)
   {
-    if (!isset($key)) return static::$user ?? NULL;
+    if (!isset($key))
+      return static::$user ?? NULL;
 
     return static::$user[$key] ?? NULL;
   }
@@ -71,4 +101,15 @@ class Auth
   {
     return isset(static::$user);
   }
+
+  public static function errors()
+  {
+    return static::$errors;
+  }
+
+  public static function addError($key, $value)
+  {
+    static::$errors[$key] = $value;
+  }
+
 }

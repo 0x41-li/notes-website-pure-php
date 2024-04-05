@@ -12,47 +12,16 @@ use Http\Forms\LoginForm;
 $email = Request::post("email");
 $password = Request::post("password");
 
-// validate the login form
-$form = new LoginForm;
+if (LoginForm::validate($email, $password)) {
+  if (Auth::attempt($email, $password)) {
+    Response::redirect("/notes");
+  }
 
-if ($form->validate($email, $password)) {
+  Auth::addError("login", "Your credentiasl doesn't match our records");
+
   view("auth/login.view.php", [
-    "errors" => $form->errors()
+    "errors" => Auth::errors()
   ]);
 
   exit();
 }
-
-// check if the user exist
-$db = App::resolve(Database::class);
-
-$user = $db->query(
-  "SELECT * FROM users WHERE email = :email",
-  [
-    ":email" => $email
-  ]
-)->find();
-
-
-if (!$user) {
-  $errors["login"] = "The provided email and password doesn't match our database records";
-  view("auth/login.view.php", ["errors" => $errors]);
-
-  exit();
-}
-
-// Check if the password provided match the user's hashed pass on the database
-if (!password_verify($password, $user["password"])) {
-  $errors["login"] = "The provided email and password doesn't match our database records";
-
-  view("auth/login.view.php", ["errors" => $errors]);
-
-  exit();
-}
-
-
-// log the user in
-Auth::login($user);
-
-// redirect the user to the notes
-Response::redirect("/notes");

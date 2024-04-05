@@ -6,24 +6,24 @@ use Core\Validator;
 
 class LoginForm
 {
-  protected $errors = [];
+  protected static $errors = [];
 
-  public function validate($email, $password)
+  public static function validate($email, $password)
   {
     if (!Validator::string($email, 7, 255) || !Validator::email($email)) {
-      $this->errors["email"] = "Please provide a valid email";
+      static::$errors["email"] = "Please provide a valid email";
     }
 
     if (!Validator::string($password, 7, 255)) {
-      $this->errors["password"] = "Please provide a password that has min 7 characters and max 255 characters";
+      static::$errors["password"] = "Please provide a password that has min 7 characters and max 255 characters";
     }
 
-    return empty($this->errors);
+    return empty(static::$errors);
   }
 
-  public function errors()
+  public static function errors()
   {
-    return $this->errors;
+    return static::$errors;
   }
 
   // 
