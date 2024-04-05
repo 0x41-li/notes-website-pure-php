@@ -6,24 +6,19 @@ use Core\Database;
 use Core\Request;
 use Core\Response;
 use Core\Validator;
+use Http\Forms\LoginForm;
 
 // Get the form suubmitted data
 $email = Request::post("email");
 $password = Request::post("password");
 
-// validate the form
-$errors = [];
+// validate the login form
+$form = new LoginForm;
 
-if (!Validator::string($email, 7, 255) || !Validator::email($email)) {
-  $errors["email"] = "Please provide a valid email";
-}
-
-if (!Validator::string($password, 7, 255)) {
-  $errors["password"] = "Please provide a password that has min 7 characters and max 255 characters";
-}
-
-if (!empty($errors)) {
-  view("auth/login.view.php", ["errors" => $errors]);
+if ($form->validate($email, $password)) {
+  view("auth/login.view.php", [
+    "errors" => $form->errors()
+  ]);
 
   exit();
 }
