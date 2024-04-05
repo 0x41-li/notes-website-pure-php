@@ -34,3 +34,8 @@ function authorize($condition)
 
   return $condition;
 }
+
+function urlIs($slug)
+{
+  return $_SERVER["REQUEST_URI"] === $slug;
+}
