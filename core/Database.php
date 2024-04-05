@@ -29,6 +29,21 @@ class Database
     return $this;
   }
 
+
+  public function find()
+  {
+    $result = $this->statement->fetch();
+
+    return $result;
+  }
+
+  public function findAll()
+  {
+    $result = $this->statement->fetchAll();
+
+    return $result;
+  }
+
   public function findOrFail()
   {
     $result = $this->statement->fetch();
@@ -38,18 +53,9 @@ class Database
     return $result;
   }
 
-  public function find()
-  {
-    $result = $this->statement->fetch();
-
-    return $result;
-  }
-
   public function findAllOrFail()
   {
     $result = $this->statement->fetchAll();
-
-    if (count($result) === 0) return $result;
 
     if (!$result) Response::notFound();
 

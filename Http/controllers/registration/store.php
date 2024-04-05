@@ -63,7 +63,7 @@ $db->query(
 );
 
 // log the user in
-Auth::login(["name" => $name, "email" => $email]);
+Auth::login($user);
 
 // redirect the user to the notes
 Response::redirect("/notes");

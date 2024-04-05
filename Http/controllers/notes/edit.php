@@ -1,6 +1,7 @@
 <?php
 
 use Core\App;
+use Core\Auth;
 use Core\Database;
 
 // Grab the database
@@ -16,8 +17,7 @@ $note = $db->query(
 )->findOrFail();
 
 // check if the user is authorized to see this note
-$current_user = 1;
-authorize($current_user === $note["user_id"]);
+authorize(Auth::user("id") === $note["user_id"]);
 
 // return the edit view form
 $heading = "Edit Note";

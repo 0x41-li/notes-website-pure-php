@@ -24,24 +24,37 @@ if (!Validator::string($password, 7, 255)) {
 
 if (!empty($errors)) {
   view("auth/login.view.php", ["errors" => $errors]);
+
   exit();
 }
 
 // check if the user exist
 $db = App::resolve(Database::class);
-$user = $db->query("SELECT * FROM users WHERE email = :email", [":email" => $email])->find();
+
+$user = $db->query(
+  "SELECT * FROM users WHERE email = :email",
+  [
+    ":email" => $email
+  ]
+)->find();
+
 
 if (!$user) {
   $errors["login"] = "The provided email and password doesn't match our database records";
   view("auth/login.view.php", ["errors" => $errors]);
-}
 
+  exit();
+}
 
 // Check if the password provided match the user's hashed pass on the database
 if (!password_verify($password, $user["password"])) {
   $errors["login"] = "The provided email and password doesn't match our database records";
+
   view("auth/login.view.php", ["errors" => $errors]);
+
+  exit();
 }
+
 
 // log the user in
 Auth::login($user);

@@ -11,16 +11,21 @@ class Response
   public static function forbidden()
   {
     static::abort(self::FORBIDDEN);
+
+    die();
   }
 
   public static function notFound()
   {
     static::abort(self::NOT_FOUND);
+
+    die();
   }
 
   public static function redirect($location)
   {
     header("Location: $location");
+
     die();
   }
 

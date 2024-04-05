@@ -66,7 +66,9 @@ view("partials/nav.php");
 
     </div>
   </main>
+
 </div>
+
 
 
 <?php

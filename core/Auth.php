@@ -20,7 +20,7 @@ class Auth
     // Preventing session fixation attack
     session_regenerate_id();
 
-    // Mark the user login
+    // Mark the user logged in
     $_SESSION["user"] = [
       "id" => $user["id"],
       "name" => $user["name"],
@@ -29,6 +29,8 @@ class Auth
 
     // Store this on the user static var on this class
     static::$user = $_SESSION["user"];
+
+    dd($user);
   }
 
   public static function logout()
@@ -57,9 +59,11 @@ class Auth
     session_destroy();
   }
 
-  public static function user()
+  public static function user($key = NULL)
   {
-    return static::$user ?? null;
+    if (!isset($key)) return static::$user ?? NULL;
+
+    return static::$user[$key] ?? NULL;
   }
 
 

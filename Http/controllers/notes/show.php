@@ -2,12 +2,12 @@
 
 use Core\App;
 use Core\Database;
+use Core\Auth;
+
 
 $db = App::resolve(Database::class);
 
 $id = $_GET["id"] ?? null;
-
-$current_user = 1;
 
 $note = $db->query(
   "SELECT * FROM notes WHERE id = :id",
@@ -16,7 +16,8 @@ $note = $db->query(
   ]
 )->findOrFail();
 
-authorize($current_user === $note["user_id"]);
+
+authorize(Auth::user("id") === $note["user_id"]);
 
 $heading = $note['title'];
 

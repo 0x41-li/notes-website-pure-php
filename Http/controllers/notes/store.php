@@ -4,6 +4,7 @@ use Core\Validator;
 use Core\Response;
 
 use Core\App;
+use Core\Auth;
 use Core\Database;
 
 $db = App::resolve(Database::class);
@@ -18,8 +19,9 @@ if (!Validator::string($_POST["body"], 1, 1000)) {
   $errors["body"] = "The body is required, and cannot be more than 1000 characters";
 }
 
-$heading = "Create A New Note";
+
 if (!empty($errors)) {
+  $heading = "Create A New Note";
   view("notes/create.view.php", ["heading" => $heading, "errors" => $errors]);
   die();
 }
@@ -29,7 +31,7 @@ $db->query(
   [
     ':title' => $_POST['title'],
     ':body' => $_POST['body'],
-    ':user_id' => 1
+    ':user_id' => Auth::user("id")
   ]
 );
 
