@@ -1,11 +1,9 @@
 <?php
 
-use Core\App;
 use Core\Auth;
-use Core\Database;
 use Core\Request;
 use Core\Response;
-use Core\Validator;
+use Core\Session;
 use Http\Forms\LoginForm;
 
 // Get the form suubmitted data
@@ -16,12 +14,9 @@ if (LoginForm::validate($email, $password)) {
   if (Auth::attempt($email, $password)) {
     Response::redirect("/notes");
   }
-
-  Auth::addError("login", "Your credentiasl doesn't match our records");
-
-  view("auth/login.view.php", [
-    "errors" => Auth::errors()
-  ]);
-
-  exit();
 }
+
+Session::flash("errors", LoginForm::errors());
+
+// PRG with errors
+Response::redirect("/login");

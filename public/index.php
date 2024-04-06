@@ -1,6 +1,7 @@
 <?php
 
 use Core\Router;
+use Core\Session;
 
 // webroot dir
 const BASE_PATH = __DIR__ . "/../";
@@ -31,3 +32,6 @@ $method = $_POST["_method"] ?? $_SERVER["REQUEST_METHOD"];
 
 // resolve the current visited path
 $router->resolve($uri, $method);
+
+// unflash flash messages
+Session::unFlash();

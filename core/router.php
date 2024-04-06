@@ -94,9 +94,10 @@ class Router
         Middleware::resolve($route["middleware"]);
 
         require_once base_path("Http/controllers/" . $route["controller"]);
-        exit();
+        return;
       }
     }
+
 
     Response::notFound();
   }

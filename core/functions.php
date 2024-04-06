@@ -11,6 +11,13 @@ function dd($data)
   die();
 }
 
+function dump($data)
+{
+  echo "<pre>";
+  var_dump($data);
+  echo "</pre>";
+}
+
 function base_path($path = "")
 {
   return BASE_PATH . $path;
@@ -30,7 +37,8 @@ function is_post_request()
 
 function authorize($condition)
 {
-  if (!$condition) Response::forbidden();
+  if (!$condition)
+    Response::forbidden();
 
   return $condition;
 }
