@@ -29,7 +29,6 @@ class Database
     return $this;
   }
 
-
   public function find()
   {
     $result = $this->statement->fetch();
@@ -48,7 +47,8 @@ class Database
   {
     $result = $this->statement->fetch();
 
-    if (!$result) Response::notFound();
+    if (!$result)
+      Response::notFound();
 
     return $result;
   }
@@ -57,8 +57,14 @@ class Database
   {
     $result = $this->statement->fetchAll();
 
-    if (!$result) Response::notFound();
+    if (!$result)
+      Response::notFound();
 
     return $result;
+  }
+
+  public function lastInsertedId()
+  {
+    return $this->conn->lastInsertId();
   }
 }

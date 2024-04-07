@@ -3,13 +3,20 @@
 namespace Http\Forms;
 
 use Core\Validator;
+use Http\Forms\Form;
 
-class LoginForm extends Form
+
+class RegisterForm extends Form
 {
-  protected static $errors = [];
 
-  public static function validate($email, $password)
+  protected static $errors = [];
+  public static function validate($name, $email, $password)
   {
+
+    if (!Validator::string($name, 3, 20)) {
+      static::$errors["name"] = "Please provide a real name, must be min 3 characters, and max 20 characters";
+    }
+
     if (!Validator::string($email, 7, 255) || !Validator::email($email)) {
       static::$errors["email"] = "Please provide a valid email";
     }
@@ -20,6 +27,4 @@ class LoginForm extends Form
 
     return empty(static::$errors);
   }
-
-  // 
 }

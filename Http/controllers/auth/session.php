@@ -16,7 +16,7 @@ if (LoginForm::validate($email, $password)) {
   }
 }
 
-Session::flash("errors", LoginForm::errors());
 
 // PRG with errors
+Session::flash("errors", LoginForm::errors());
 Response::redirect("/login");

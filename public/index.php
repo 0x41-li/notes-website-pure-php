@@ -19,7 +19,6 @@ spl_autoload_register(function ($class) {
 // bootstrap the webapp
 require_once base_path("/bootstrap.php");
 
-
 // initializing the router
 $router = new Router();
 

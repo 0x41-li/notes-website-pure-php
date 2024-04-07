@@ -1,11 +1,11 @@
 <?php
 
-use Core\App;
 use Core\Auth;
-use Core\Database;
 use Core\Request;
 use Core\Response;
-use Core\Validator;
+use Core\Session;
+use Core\UserRepository;
+use Http\Forms\RegisterForm;
 
 // Get the form suubmitted data
 $name = Request::post("name");
@@ -13,57 +13,24 @@ $email = Request::post("email");
 $password = Request::post("password");
 
 // validate the form
-$errors = [];
-
-if (!Validator::string($name, 3, 20)) {
-  $errors["name"] = "Please provide a real name, must be min 3 characters, and max 20 characters";
-}
-
-if (!Validator::string($email, 7, 255) || !Validator::email($email)) {
-  $errors["email"] = "Please provide a valid email";
-}
-
-if (!Validator::string($password, 7, 255)) {
-  $errors["password"] = "Please provide a password that has min 7 characters and max 255 characters";
-}
-
-if (!empty($errors)) {
-  view("registration/create.view.php", ["errors" => $errors]);
-  exit();
-}
-
-// check if the email already exist
-$db = App::resolve(Database::class);
-$user_with_same_email = $db->query("SELECT * FROM users WHERE email = :email", [":email" => $email])->find();
-
-if ($user_with_same_email) {
-  view(
-    "registration/create.view.php",
-    [
-      "errors" =>
+if (RegisterForm::validate($name, $email, $password)) {
+  if (UserRepository::create($name, $email, $password)) {
+    // log the user
+    Auth::login(
       [
-        "email" => "This email is already in use"
+        "id" => UserRepository::lastInsertedId(),
+        "name" => $name,
+        "email" => $email,
       ]
-    ]
-  );
-  exit();
+    );
+
+    // redirect the user to their notes
+    Response::redirect("/notes");
+  }
 }
 
-// hash the password
-$hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-// store the new user
-$db->query(
-  "INSERT INTO users (name, email, password) VALUES(:name, :email, :password)",
-  [
-    ":name" => $name,
-    ":email" => $email,
-    ":password" => $hashed_password
-  ]
-);
-
-// log the user in
-Auth::login($user);
-
-// redirect the user to the notes
-Response::redirect("/notes");
+// PRG with errors
+$errors = RegisterForm::errors() ?? UserRepository::errors();
+Session::flash("errors", $errors);
+Response::redirect("/register");
