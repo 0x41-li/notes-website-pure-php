@@ -16,8 +16,6 @@ class Database
     $this->conn = new PDO($dsn, $config['username'], $config['password'], [
       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ]);
-
-    return $this;
   }
 
   public function query(string $query, array $params = [])
