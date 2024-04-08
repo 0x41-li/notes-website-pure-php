@@ -8,8 +8,8 @@ use Http\Forms\Form;
 
 class RegisterForm extends Form
 {
-
   protected static $errors = [];
+
   public static function validate($name, $email, $password)
   {
 

@@ -30,7 +30,13 @@ if (RegisterForm::validate($name, $email, $password)) {
 }
 
 
-// PRG with errors
+// PRG with errors & old data
 $errors = RegisterForm::errors() ?? UserRepository::errors();
 Session::flash("errors", $errors);
+Session::flash("old", [
+  "name" => $name,
+  "email" => $email,
+]);
+
+// redirect
 Response::redirect("/register");
