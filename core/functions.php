@@ -1,6 +1,7 @@
 <?php
 
 use Core\Response;
+use Core\Session;
 
 function dd($data)
 {
@@ -46,4 +47,9 @@ function authorize($condition)
 function urlIs($slug)
 {
   return $_SERVER["REQUEST_URI"] === $slug;
+}
+
+function old($key)
+{
+  return Session::get("old")[$key] ?? "";
 }
