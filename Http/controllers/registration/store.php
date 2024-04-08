@@ -4,7 +4,7 @@ use Core\Auth;
 use Core\Request;
 use Core\Response;
 use Core\Session;
-use Core\UserRepository;
+use Http\Repositories\UsersRepository;
 use Http\Forms\RegisterForm;
 
 // Get the form suubmitted data
@@ -14,11 +14,11 @@ $password = Request::post("password");
 
 // validate the form
 if (RegisterForm::validate($name, $email, $password)) {
-  if (UserRepository::create($name, $email, $password)) {
+  if (UsersRepository::create($name, $email, $password)) {
     // log the user
     Auth::login(
       [
-        "id" => UserRepository::lastInsertedId(),
+        "id" => UsersRepository::lastInsertedId(),
         "name" => $name,
         "email" => $email,
       ]
@@ -31,7 +31,7 @@ if (RegisterForm::validate($name, $email, $password)) {
 
 
 // PRG with errors & old data
-$errors = RegisterForm::errors() ?? UserRepository::errors();
+$errors = RegisterForm::errors() ?? UsersRepository::errors();
 Session::flash("errors", $errors);
 Session::flash("old", [
   "name" => $name,

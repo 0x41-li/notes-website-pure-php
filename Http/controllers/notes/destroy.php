@@ -3,12 +3,14 @@
 use Core\App;
 use Core\Database;
 use Core\Response;
+use Core\Auth;
+use Core\Request;
 
 $db = App::resolve(Database::class);
 
-$id = $_POST["id"];
+$id = Request::post("id");
 
-$currentUser = 1;
+$currentUser = Auth::user("id");
 
 $note = $db->query(
   'SELECT * FROM notes WHERE id = :id',
@@ -17,7 +19,7 @@ $note = $db->query(
   ]
 )->findOrFail();
 
-authorize($currentUser === $note["user_id"]);
+authorize($currentUser == $note["user_id"]);
 
 $db->query('DELETE FROM notes WHERE id = :id', [":id" => $id]);
 

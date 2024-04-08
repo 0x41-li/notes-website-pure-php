@@ -1,57 +1,45 @@
 <?php
 
-use Core\Validator;
+use Core\Request;
+use Core\Session;
 use Core\Response;
+use Core\Auth;
+use Http\Forms\CreateNoteForm;
+use Http\Repositories\NotesRepository;
 
-use Core\App;
-use Core\Database;
+// Data
+$id = Request::post("id");
+$title = Request::post("title");
+$content = Request::post("content");
 
-$db = App::resolve(Database::class);
+$currentUser = Auth::user("id");
 
-
-$currentUser = 1;
-
-// find the note
-$note = $db->query(
-  'SELECT * FROM notes WHERE id = :id',
-  [
-    ":id" => $_POST["id"]
-  ]
-)->findOrFail();
-
-// check if the user is authorize to edit it
-authorize($currentUser === $note["user_id"]);
+// If the note doesn't exist return not found 
+if (!NotesRepository::exists($id))
+  Response::notFound();
 
 
-// validate the edit form
-$errors = [];
+// Check if the user is authorize to edit it
+authorize($currentUser == $currentUser);
 
-if (!Validator::string($_POST["title"], 1, 255)) {
-  $errors["title"] = "The title is required, and cannot be more than 255 characters";
-}
 
-if (!Validator::string($_POST["body"], 1, 1000)) {
-  $errors["body"] = "The body is required, and cannot be more than 1000 characters";
-}
+// If the form data is not validated 
+if (!CreateNoteForm::validate($title, $content)) {
+  // flash errors & old data
+  Session::flash("errors", CreateNoteForm::errors());
+  Session::flash("old", [
+    "title" => $title,
+    "content" => $content
+  ]);
 
-if (!empty($errors)) {
-  $heading = "Edit Note";
+  // Redirect
+  Response::redirect("/note/edit?id={$id}");
 
-  view("notes/edit.view.php", ["heading" => $heading, "errors" => $errors, "note" => $note]);
-
-  die();
 }
 
 
 // update the record
-$db->query(
-  'UPDATE notes set title = :title,  body = :body WHERE id = :id',
-  [
-    ':title' => $_POST['title'],
-    ':body' => $_POST['body'],
-    ':id' => $_POST['id'],
-  ]
-);
+NotesRepository::update($id, $title, $content);
 
 // redirect to the edited note
-Response::redirect("/note?id={$note["id"]}");
+Response::redirect("/note?id={$id}");

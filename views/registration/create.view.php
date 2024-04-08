@@ -1,7 +1,5 @@
 <?php
 
-use Core\Request;
-
 view("partials/header.php");
 view("partials/nav.php");
 

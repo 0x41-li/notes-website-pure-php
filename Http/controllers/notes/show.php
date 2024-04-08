@@ -17,7 +17,8 @@ $note = $db->query(
 )->findOrFail();
 
 
-authorize(Auth::user("id") === $note["user_id"]);
+
+authorize(Auth::user("id") == $note["user_id"]);
 
 $heading = $note['title'];
 

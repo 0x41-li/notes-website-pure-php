@@ -1,46 +1,31 @@
 <?php
 
-use Core\Validator;
-use Core\Response;
-
-use Core\App;
-use Core\Auth;
-use Core\Database;
 use Core\Request;
-use Http\Forms\RegisterForm;
+use Core\Response;
+use Core\Session;
+use Http\Repositories\NotesRepository;
+use Http\Forms\CreateNoteForm;
 
 
-$name = Request::post("name");
-$email = Request::post("email");
-$password = Request::post("password");
+// Get data submitted
+$title = Request::post("title");
+$content = Request::post("content");
 
-$db = App::resolve(Database::class);
+// Check if validating the above data fails
+if (!CreateNoteForm::validate($title, $content)) {
+  // flashing errors & old data
+  Session::flash("errors", CreateNoteForm::errors());
+  Session::flash("old", [
+    "title" => $title,
+    "content" => $content,
+  ]);
 
-$errors = [];
-
-
-if (!Validator::string($_POST["title"], 1, 255)) {
-  $errors["title"] = "The title is required, and cannot be more than 255 characters";
+  // Redirect
+  Response::redirect("/note/create");
 }
 
-if (!Validator::string($_POST["body"], 1, 1000)) {
-  $errors["body"] = "The body is required, and cannot be more than 1000 characters";
-}
+// Insert a new note into the db
+NotesRepository::create($title, $content);
 
-
-if (!empty($errors)) {
-  $heading = "Create A New Note";
-  view("notes/create.view.php", ["heading" => $heading, "errors" => $errors]);
-  die();
-}
-
-$db->query(
-  'INSERT INTO notes (title, body, user_id) VALUES (:title, :body, :user_id)',
-  [
-    ':title' => $_POST['title'],
-    ':body' => $_POST['body'],
-    ':user_id' => Auth::user("id")
-  ]
-);
-
+// redirect
 Response::redirect("/notes");

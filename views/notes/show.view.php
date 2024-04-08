@@ -17,13 +17,16 @@ view("/partials/nav.php");
 
   <main>
     <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-      <a href="/notes" class="mb-8 inline-block bg-gray-800 text-sm text-white hover:bg-gray-700 font-bold px-4 py-2 rounded">Go Back</a>
+      <a href="/notes"
+        class="mb-8 inline-block bg-gray-800 text-sm text-white hover:bg-gray-700 font-bold px-4 py-2 rounded">Go
+        Back</a>
 
       <p class="">
-        <?= htmlspecialchars($note['body']) ?>
+        <?= htmlspecialchars($note['content']) ?>
       </p>
 
-      <a href="/note/edit?id=<?= $note['id'] ?>" class="mt-4 inline-block bg-blue-500 text-sm text-white hover:bg-blue-700 font-bold px-4 py-2 rounded">
+      <a href="/note/edit?id=<?= $note['id'] ?>"
+        class="mt-4 inline-block bg-blue-500 text-sm text-white hover:bg-blue-700 font-bold px-4 py-2 rounded">
         Edit
       </a>
     </div>

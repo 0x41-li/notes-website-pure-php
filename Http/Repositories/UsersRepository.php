@@ -1,11 +1,11 @@
 <?php
 
-namespace Core;
+namespace Http\Repositories;
 
 use Core\App;
 use Core\Database;
 
-class UserRepository
+class UsersRepository extends Repository
 {
   protected static $errors = [];
   protected static $lastInsertedId = NULL;
@@ -37,15 +37,5 @@ class UserRepository
     static::$lastInsertedId = $db->lastInsertedId();
 
     return empty(static::$errors);
-  }
-
-  public static function errors()
-  {
-    return static::$errors;
-  }
-
-  public static function lastInsertedId()
-  {
-    return static::$lastInsertedId ?? NULL;
   }
 }
