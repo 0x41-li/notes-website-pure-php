@@ -6,15 +6,10 @@ use Core\Session;
 // webroot dir
 const BASE_PATH = __DIR__ . "/../";
 
+require_once BASE_PATH . "/vendor/autoload.php";
+
 // Require useful functions 
 require_once BASE_PATH . "/core/functions.php";
-
-// autoloading
-spl_autoload_register(function ($class) {
-  $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-
-  require base_path("{$class}.php");
-});
 
 // bootstrap the webapp
 require_once base_path("/bootstrap.php");

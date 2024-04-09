@@ -1,0 +1,16 @@
+{
+  "name": "alisbane/notes-app",
+  "authors": [
+    {
+      "name": "Ali Sbane",
+      "email": "ali.sbane.dev@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Core\\": "Core",
+      "Http\\": "Http"
+    }
+  }
+}
