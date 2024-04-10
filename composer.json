@@ -6,11 +6,18 @@
       "email": "ali.sbane.dev@gmail.com"
     }
   ],
-  "require": {},
   "autoload": {
     "psr-4": {
       "Core\\": "Core",
       "Http\\": "Http"
+    }
+  },
+  "require-dev": {
+    "pestphp/pest": "^2.34"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
     }
   }
 }
